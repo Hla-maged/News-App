@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:news_app/models/article_mode.dart';
 import 'package:news_app/models/item_model.dart';
+import 'package:news_app/widgets/WebView.dart';
 
 class NewsItem extends StatelessWidget {
   final ArticleModel articleModel;
@@ -10,22 +11,29 @@ class NewsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-         ClipRRect(
-          borderRadius: BorderRadius.circular(6),
-          child: articleModel.image != null
-              ? Image.network(
-                  articleModel.image!,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                )
-              : Image.asset(
-                'assets/news.jpg',
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-        ),
+      GestureDetector(
+        onDoubleTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            return WebView(url: articleModel.url!);
+          }));
+        },
+        child: 
+      ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: articleModel.image != null
+            ? Image.network(
+                articleModel.image!,
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              )
+            : Image.asset(
+                'assets/noImage.jpg',
+                height: 200,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+      ),),
       Text(
         articleModel.title!,
         maxLines: 2,
